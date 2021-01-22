@@ -1,11 +1,15 @@
-import React, { creatContext, useState } from 'react'
+import React, { createContext, useState } from 'react';
 
-export const BookContext = createContext()
+export const BookContext = createContext();
 
-const BookProvider = (props) => {
-  const [book, setBook] = useState({ name: 'One book', isbn: '32453' })
+const BookProvider = ({ children }) => {
+  const [book, setBook] = useState({ name: 'One book', isbn: '32453' });
 
-  return <BookContext.Provider value={book}></BookContext.Provider>
-}
+  return (
+    <BookContext.Provider value={{ book: book, setBook: setBook }}>
+      {children}
+    </BookContext.Provider>
+  );
+};
 
-export default BookProvider
+export default BookProvider;

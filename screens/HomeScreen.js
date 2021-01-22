@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react'
+import React, { useState, useContext, useEffect } from 'react';
 import {
   StyleSheet,
   Text,
@@ -8,23 +8,26 @@ import {
   Button,
   TouchableOpacity,
   StatusBar,
-} from 'react-native'
-import Card from '../components/Card'
-import { Ionicons } from '@expo/vector-icons'
-import AddBookForm from '../components/AddBookForm'
-import { BookContext } from '../context/BookContext'
+} from 'react-native';
+import Card from '../components/Card';
+import { Ionicons } from '@expo/vector-icons';
+import AddBookForm from '../components/AddBookForm';
+import { BookContext } from '../context/BookContext';
+import { ThemeContext } from '../context/ThemeContext';
 
 const HomeScreen = ({ navigation, route, books, setBooks, onDelete }) => {
-  const [modalVisible, setModalVisible] = useState(false)
+  const [modalVisible, setModalVisible] = useState(false);
+  const { book, setBook } = useContext(BookContext);
+  const { themes } = useContext(ThemeContext);
 
   const ToggleModal = () => {
-    setModalVisible(!modalVisible)
-  }
+    setModalVisible(!modalVisible);
+  };
 
   return (
     <View style={styles.container}>
       <StatusBar hidden={modalVisible} />
-      <Modal animationType='fade' transparent={false} visible={modalVisible}>
+      <Modal animationType="fade" transparent={false} visible={modalVisible}>
         <TouchableOpacity
           style={{
             width: 30,
@@ -49,9 +52,9 @@ const HomeScreen = ({ navigation, route, books, setBooks, onDelete }) => {
 
       <Ionicons
         style={styles.icon}
-        name='add-circle-outline'
+        name="add-circle-outline"
         size={55}
-        color='black'
+        color="black"
         onPress={() => setModalVisible(!modalVisible)}
       />
 
@@ -65,12 +68,14 @@ const HomeScreen = ({ navigation, route, books, setBooks, onDelete }) => {
             icon={true}
           />
         )}
-        keyExtractor={(item) => item.isbn}
+        keyExtractor={(item) =>
+          `${item.isbn}-${Math.floor(Math.random() * 1000)}`
+        }
       />
     </View>
-  )
-}
-export default HomeScreen
+  );
+};
+export default HomeScreen;
 
 const styles = StyleSheet.create({
   container: {
@@ -85,4 +90,4 @@ const styles = StyleSheet.create({
     fontSize: 25,
     fontWeight: 'bold',
   },
-})
+});
